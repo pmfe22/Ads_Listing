@@ -1,0 +1,15 @@
+{% extends 'ads/base.html' %}
+
+{% block title %}Sign Up - Ads Listing{% endblock %}
+
+{% block content %}
+    <h2>Sign Up</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- فرم ثبت‌نام -->
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit" class="btn btn-success">Sign Up</button>
+    </form>
+{% endblock %}

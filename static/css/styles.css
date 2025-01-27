@@ -1,0 +1,83 @@
+.navbar {
+    background-color: #007bff;
+    padding: 20px 0;
+}
+.navbar-brand {
+    font-size: 2rem;
+    color: white;
+}
+.navbar-nav .nav-link {
+    color: white;
+    font-size: 1.1rem;
+}
+.nav-link:hover {
+    color: #ffd700;
+}
+.d-flex .btn-outline-primary, .d-flex .btn-outline-success {
+    border-color: white;
+    color: white;
+}
+.d-flex .btn-outline-primary:hover, .d-flex .btn-outline-success:hover {
+    background-color: white;
+    color: #007bff;
+}
+
+
+/* تنظیم اندازه تصویر */
+.ad-image {
+    width: 100%; /* تنظیم عرض به اندازه 100% از والد */
+    max-width: 500px; /* حداکثر عرض تصویر */
+    height: auto; /* حفظ نسبت ابعادی تصویر */
+    display: block; /* جلوگیری از فاصله‌های اضافی */
+    margin: 0 auto; /* مرکز کردن تصویر */
+}
+
+
+/* تنظیمات برای تصاویر در کارت‌ها */
+.card-img-top {
+    width: 100%; /* عرض 100% از والد */
+    height: 200px; /* ارتفاع ثابت */
+    object-fit: cover; /* برش تصویر به تناسب سایز */
+    object-position: center; /* مرکز کردن تصویر */
+}
+
+
+/* styles.css */
+.navbar .d-flex {
+    margin-right: 20px;
+}
+
+.navbar .form-control {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.navbar .btn-outline-light {
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+
+
+.user-info {
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    text-align: right;
+    margin-right: 15px;
+    color: #333;
+}
+
+.user-info .username {
+    font-weight: bold;
+    color: #ce3a3a;
+}
+
+.user-info .login-link {
+    text-decoration: none;
+    color: #0a0a0a;
+    font-weight: bold;
+}
+
+.user-info .login-link:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}

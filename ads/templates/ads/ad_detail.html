@@ -1,0 +1,111 @@
+{% extends 'ads/base.html' %}
+{% load static %}
+
+{% block title %}{{ ad.title }} - Ad Details{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>{{ ad.title }}</h1>
+        
+        <!-- Add Image here -->
+        {% if ad.image and ad.image.url %}
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="ad-image">
+        {% else %}
+            <p>No image available for this ad.</p>
+        {% endif %}
+
+        <p><strong>Price:</strong> ${{ ad.price }}</p>
+        <p><strong>Description:</strong> {{ ad.description }}</p>
+        <p><strong>Created at:</strong> {{ ad.created_at }}</p>
+        <p><strong>Owner:</strong> {{ ad.owner }}</p>
+        <!-- Action Buttons: Edit, Delete, Favorite -->
+        <div class="d-flex mt-4">
+            {% if user.is_authenticated and ad.owner == user %}
+                <a href="{% url 'edit_ad' ad.id %}" class="btn btn-primary m-2">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="{% url 'delete_ad' ad.id %}" class="btn btn-danger m-2">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </a>
+            {% endif %}
+
+            <!-- دکمه علاقه‌مندی‌ها -->
+                {% if user.is_authenticated %}
+                    <button class="btn btn-warning toggle-favorite" data-ad-id="{{ ad.id }}">
+                        {% if ad.favorite %}
+                            <i class="fas fa-star"></i> Unfavorite
+                        {% else %}
+                            <i class="far fa-star"></i> Favorite
+                        {% endif %}    
+                    </button>
+                {% endif %}
+        </div>
+
+        
+
+        <!-- Display Comments -->
+        <div class="mt-5">
+            <h3>Comments</h3>
+            {% if ad.comments.all %}
+                <ul class="list-group">
+                    {% for comment in ad.comments.all %}
+                        <li class="list-group-item">
+                            <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+                            <br>
+                            <small class="text-muted">{{ comment.created_at }}</small>
+                            
+                            <!-- Only show edit and delete options for the logged-in user who posted the comment -->
+                            {% if comment.user == request.user %}
+                            <div class="mt-2">
+                                <!-- Edit Icon -->
+                                <a href="{% url 'edit_comment' comment.id %}" class="text-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                
+                                <!-- Delete Icon -->
+                                <a href="{% url 'delete_comment' comment.id %}" class="text-danger ms-2">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet. Be the first to comment!</p>
+            {% endif %}
+        </div>
+
+        <!-- Add Comment Form -->
+        {% if user.is_authenticated %}
+            <div class="mt-4">
+                <h4>Leave a Comment</h4>
+                <form method="post" action="{% url 'add_comment' ad.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea name="content" class="form-control" rows="3" placeholder="Your comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+            </div>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to leave a comment.</p>
+        {% endif %}
+    </div> <br>
+
+
+    <!-- Display Tags -->
+<h3>Tags:</h3>
+<ul>
+    {% for tag in tags.all %}
+        <li>
+            <a href="{% url 'ad_list' %}?q={{ tag.name }}" class="badge bg-primary">{{ tag.name }}</a>
+        </li>
+    {% empty %}
+        <li>No tags available.</li>
+    {% endfor %}
+</ul>
+<script src="{% static 'js/favorites.js' %}"></script>
+{% endblock %}
+
+

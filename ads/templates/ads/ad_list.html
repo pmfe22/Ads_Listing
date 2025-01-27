@@ -1,0 +1,72 @@
+{% extends 'ads/base.html' %}
+{% load static %}
+
+{% block title %}All Ads{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>All Ads</h1>
+
+        <!-- Search Form -->
+        <form class="d-flex mb-4" method="GET" action="{% url 'ad_list' %}">
+            <input class="form-control me-2" type="search" placeholder="Search ads" aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-primary ms-2">Search</button>
+        </form>
+
+        {% if request.GET.q %}
+            <a href="{% url 'ad_list' %}" class="btn btn-outline-secondary mt-2">Clear Search</a>
+        {% endif %}
+
+        <!-- Display Search Results -->
+        {% if query %}
+            <p>Results for: "{{ query }}"</p>
+        {% endif %}
+
+        <div class="row">
+            {% for ad in ads %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            {% if ad.image %}
+                                <img src="{{ ad.image.url }}" class="card-img-top" alt="{{ ad.title }}">
+                            {% endif %}
+                            <h5 class="card-title">{{ ad.title }}</h5>
+                            <p class="card-text">{{ ad.description|slice:":100" }}...</p>
+                            <p class="card-text">Price: ${{ ad.price }}</p>
+                            <p class="card-text">
+                                <small class="text-muted">Created at: {{ ad.created_at }}</small>
+                            </p>
+                            <p>
+                                <a href="{% url 'ad_detail' ad.id %}" class="btn btn-info">
+                                    View Details
+                                </a>
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if user.is_authenticated and ad.owner == user %}
+                                    <a href="{% url 'edit_ad' ad.id %}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'delete_ad' ad.id %}" class="btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                {% endif %}
+                                <!-- دکمه علاقه‌مندی‌ها -->
+                                {% if user.is_authenticated %}
+                                    <button class="btn btn-warning toggle-favorite" data-ad-id="{{ ad.id }}">
+                                        {% if ad.favorite %}
+                                            <i class="fas fa-star"></i> Unfavorite
+                                        {% else %}
+                                            <i class="far fa-star"></i> Favorite
+                                        {% endif %}    
+                                    </button>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script src="{% static 'js/favorites.js' %}"></script>
+{% endblock %}

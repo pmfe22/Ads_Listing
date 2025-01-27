@@ -1,0 +1,24 @@
+{% extends 'ads/base.html' %}
+
+{% block content %}
+    <h1>My Favorites</h1>
+    <div class="row">
+        {% for ad in ads %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    {% if ad.image %}
+                         <img src="{{ ad.image.url }}" class="card-img-top" alt="{{ ad.title }}">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ad.title }}</h5>
+                        <p class="card-text">{{ ad.description }}</p>
+                        <a href="{% url 'ad_detail' ad.id %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No favorite ads found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
